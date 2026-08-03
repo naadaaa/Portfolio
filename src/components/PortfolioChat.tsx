@@ -3,6 +3,7 @@
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import ProjectCard, { type ProjectCardData } from "./ProjectCard";
 
 export default function PortfolioChat() {
   const { messages, sendMessage, status, stop } = useChat({
@@ -76,9 +77,63 @@ export default function PortfolioChat() {
               ...(message.role === "user" ? styles.userBubble : styles.assistantBubble),
             }}
           >
-            {message.parts.map((part, i) =>
-              part.type === "text" ? <span key={i}>{part.text}</span> : null
-            )}
+            {message.parts.map((part, i) => {
+              if (part.type === "text") {
+                return <span key={i}>{part.text}</span>;
+              }
+
+              // Tool parts are typed as "tool-{toolName}". Each one carries
+              // a `state` field that moves through a fixed lifecycle:
+              // input-streaming -> input-available -> output-available
+              // (or output-error). We give each state its own visual
+              // treatment rather than one card with a different label.
+              if (part.type === "tool-getProjectDetails") {
+                switch (part.state) {
+                  case "input-streaming":
+                    return (
+                      <div key={i} style={styles.toolPending}>
+                        <span style={styles.pulseDot} />
+                        Deciding which project to look up...
+                      </div>
+                    );
+
+                  case "input-available":
+                    return (
+                      <div key={i} style={styles.toolPending}>
+                        <span style={styles.pulseDot} />
+                        Looking up{" "}
+                        <strong>
+                          {(part.input as { projectName?: string })?.projectName ??
+                            "project"}
+                        </strong>
+                        ...
+                      </div>
+                    );
+
+                  case "output-available":
+                    return (
+                      <div key={i} style={{ marginTop: 4 }}>
+                        <ProjectCard {...(part.output as ProjectCardData)} />
+                      </div>
+                    );
+
+                  case "output-error":
+                    return (
+                      <div key={i} style={styles.toolError}>
+                        <strong>Couldn't find that project.</strong>
+                        <p style={{ margin: "4px 0 0", fontSize: 12 }}>
+                          {part.errorText}
+                        </p>
+                      </div>
+                    );
+
+                  default:
+                    return null;
+                }
+              }
+
+              return null;
+            })}
           </div>
         ))}
 
@@ -168,6 +223,31 @@ const styles: { [key: string]: React.CSSProperties } = {
   thinkingDots: {
     opacity: 0.5,
     letterSpacing: 2,
+  },
+  toolPending: {
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    fontSize: 12,
+    color: "#8a7a80",
+    fontStyle: "italic",
+    padding: "6px 0",
+  },
+  pulseDot: {
+    width: 6,
+    height: 6,
+    borderRadius: "50%",
+    background: "#9B8AC4",
+    display: "inline-block",
+    animation: "pulse 1.2s ease-in-out infinite",
+  },
+  toolError: {
+    border: "1px solid #d99",
+    background: "#fdf0f0",
+    borderRadius: 8,
+    padding: 10,
+    fontSize: 13,
+    color: "#a33",
   },
   jumpButton: {
     alignSelf: "center",
