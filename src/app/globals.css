@@ -1,3 +1,29 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+:root {
+  --color-text: #2B2420;
+  --color-bg: #FDF6F3;
+  --color-main: #A14B65;
+  --color-accent: #9B8AC4;
+  --font-heading: 'Quicksand', sans-serif;
+  --font-body: 'Nunito Sans', sans-serif;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

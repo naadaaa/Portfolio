@@ -1,18 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Nav from "@/components/Nav";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Portfolio",
-  description: "My portfolio site",
+  title: "Nada Waleed Abdelsattar",
+  description: "I build frontend that survives contact with a real backend.",
 };
-
-const NAV_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/work", label: "Work" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-];
 
 export default function RootLayout({
   children,
@@ -21,27 +14,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-white text-neutral-900 antialiased">
-        <header className="border-b border-neutral-200">
-          <nav className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
-            <Link href="/" className="font-semibold tracking-tight">
-              Your Name
-            </Link>
-            <ul className="flex gap-6 text-sm">
-              {NAV_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-neutral-600 transition-colors hover:text-neutral-900"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </header>
-        <main className="mx-auto max-w-4xl px-6 py-12">{children}</main>
+      <body>
+        <Nav />
+        <main style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px" }}>
+          {children}
+        </main>
       </body>
     </html>
   );
