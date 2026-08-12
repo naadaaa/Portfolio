@@ -1,86 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nada Waleed Abdelsattar — Portfolio
 
-## Getting Started
+Live: https://nada-abdelsattar.vercel.app
 
-First, run the development server:
+A personal portfolio site with a working AI feature: visitors can ask
+questions about my projects and get grounded answers pulled from real
+project data via tool calls, not generic AI guesses.
 
-```bash
+## Setup & Run
+
+```
+git clone https://github.com/naadaaa/Portfolio.git
+cd Portfolio
+npm install
+```
+
+Create `.env.local` in the root:
+```
+GOOGLE_GENERATIVE_AI_API_KEY=your_gemini_api_key_here
+```
+(Get a free key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey))
+
+```
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## AI Chat Tool: `getProjectDetails`
-
-The portfolio's AI chat feature (`/api/chat`) includes one server-side tool
-the model can call when a user asks about a specific project.
-
-### Contract
-
-**Name:** `getProjectDetails`
-
-**Input schema (Zod):**
-```ts
-z.object({
-  projectName: z.string().describe(
-    "The project name as mentioned by the user, e.g. 'Verbalyn' or 'ClipSphere'."
-  ),
-})
+To run tests:
+```
+npm test
 ```
 
-**Return shape (success):**
-```ts
-{
-  name: string;
-  tagline: string;
-  stack: readonly string[];
-  description: string;
-  githubUrl: string;
-}
-```
+## Architecture
 
-**Return shape (failure):** throws an `Error` with a message listing the
-known project names, which the client renders as a designed error state
-(not a crash).
+- **`src/app/`** — Next.js App Router pages: Home (hero + chat), Work
+  (case studies), About, Contact, plus the `/api/chat` route handler.
+- **`src/components/`** — `Nav`, `PortfolioChat` (the chat UI), `ProjectCard`
+  (renders tool results).
+- **`src/lib/ai-config.ts`** — model choice and system prompt, kept in one
+  file so it's the single source of truth for how the AI is grounded.
+- **`src/lib/tools/getProjectDetails.ts`** — the one server-side tool the
+  model can call, with a Zod input schema and a typed return shape.
+- **`src/app/error.tsx`** — route-level error boundary.
 
-### Known projects
-Verbalyn, ClipSphere, Ghost Protocol, FlightDock, Readly, Accessible
-Components Playground, This Portfolio.
+## AI Integration
 
-### Matching behavior
-Looks for an exact key match first, then falls back to substring matching
-in both directions, so loose phrasing like "the accessibility playground
-you built" still resolves to the right entry.
+The chat feature uses the Vercel AI SDK's `streamText` with Google's
+Gemini model, calling one custom tool: `getProjectDetails`. The model
+decides on its own whether a user's question requires looking up a
+specific project, rather than always answering from general text alone.
+The tool returns structured data (name, stack, description, GitHub link),
+which renders as a real `ProjectCard` component, not a JSON dump. Four
+distinct lifecycle states are rendered separately: deciding what to look
+up, looking it up, showing the result, and a designed error state if the
+project isn't found.
 
-### Client rendering
-The tool's four lifecycle states each get a distinct UI treatment in
-`PortfolioChat.tsx`:
-- `input-streaming` — generic "deciding" indicator, no input yet
-- `input-available` — shows the specific project name being looked up
-- `output-available` — renders the `ProjectCard` component (not raw JSON)
-- `output-error` — a red-bordered error box showing the real error message
+This isn't a decorative chatbot: it's the actual mechanism a hiring
+manager would use to get a specific answer fast, grounded in my real
+background instead of scrolling through case studies hoping to find it.
+
+## Known Limitations & Future Improvements
+
+- The chat's project data is hardcoded in `getProjectDetails.ts` rather
+  than pulled from a real database; adding a new project means editing
+  code, not a CMS.
+- No automated end-to-end test covers the full chat flow yet, only the
+  `ProjectCard` component in isolation.
+- Mobile Safari has been manually tested on a real device once; no
+  automated cross-browser testing is in place.
+- The mid-stream stall-detection timeout (8 seconds) was chosen somewhat
+  arbitrarily and hasn't been tuned against real user patience data.
+
+## Testing
+
+Unit tests cover `ProjectCard.tsx`: renders name/tagline, description,
+every stack item, a working GitHub link with correct attributes, and
+correct behavior with an empty stack array. Run with `npm test`.
+
+## Performance & Accessibility
+
+Lighthouse (mobile): Performance 85, Accessibility 95, Best Practices 100,
+SEO 100. The initial performance run scored 74 due to the AI SDK chat
+bundle loading and blocking the main thread on every page visit, even
+before the chat was used; fixed by lazy-loading the component with
+`next/dynamic`, deferring that JavaScript until the chat section actually
+renders.
+
+## Deployment
+
+Deployed on Vercel, connected to the `main` branch of this repo — every
+push triggers an automatic redeploy. Environment variable
+`GOOGLE_GENERATIVE_AI_API_KEY` is set in Vercel's project settings, not
+committed to the repo.
