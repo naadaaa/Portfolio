@@ -46,13 +46,12 @@ export default function WorkPage() {
           polyglot systems. A communication mix-up meant we&apos;d built
           everything in Node.js when the course actually expected at least one
           service in Go. Rather than scrap the work, we rewrote the chat
-          service &mdash; the largest and most central piece of the system
-          &mdash; in Go, after it was already built and working in Node.
+          service, the largest and most central piece of the system, in Go, after it was already built and working in Node.
         </p>
 
         <h3 style={styles.subheading}>What I did</h3>
         <p style={styles.paragraph}>
-          I owned four of the five services: user, notification, auth, and the
+          I owned three of the six services: user, auth, and the
           monitoring layer. I built the Prometheus/Grafana monitoring stack
           specifically to track in-app state (active users and rooms), and
           used Kafka to handle notification events asynchronously rather than
@@ -99,15 +98,15 @@ export default function WorkPage() {
         <h3 style={styles.subheading}>The problem</h3>
         <p style={styles.paragraph}>
           A team project to build a TikTok-style short video platform with
-          real monetization and moderation &mdash; uploads, payments,
+          real monetization and moderation, uploads, payments,
           real-time social interaction, and content moderation, not just a
           video feed.
         </p>
 
         <h3 style={styles.subheading}>What I did</h3>
         <p style={styles.paragraph}>
-          I worked on the platform&apos;s real-time layer &mdash; likes,
-          follows, and tips delivered live via Socket.io &mdash; alongside
+          I worked on the platform&apos;s real-time layer, likes,
+          follows, and tips delivered live via Socket.io, alongside
           REST APIs secured with JWT and role-based access control. Keeping
           live updates synced correctly across connected clients without
           duplicating or breaking under normal use took real iteration; it
@@ -117,7 +116,7 @@ export default function WorkPage() {
         <h3 style={styles.subheading}>What came of it</h3>
         <p style={styles.paragraph}>
           A working full-stack platform combining content, payments, and
-          real-time social features &mdash; proof I can build the interactive
+          real-time social features, proof I can build the interactive
           layer of a product, not just the CRUD underneath it.
         </p>
 

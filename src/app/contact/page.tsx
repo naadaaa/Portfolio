@@ -43,9 +43,6 @@ export default function ContactPage() {
         >
           LinkedIn
         </a>
-        <a href="/nada-abdelsattar-cv.pdf" target="_blank" style={{ color: "#9B8AC4" }}>
-          CV
-        </a>
       </div>
     </div>
   );

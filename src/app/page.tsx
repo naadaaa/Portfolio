@@ -1,24 +1,4 @@
-import dynamic from "next/dynamic";
-
-const PortfolioChat = dynamic(() => import("@/components/PortfolioChat"), {
-  ssr: false,
-  loading: () => (
-    <div
-      style={{
-        height: 200,
-        borderRadius: 12,
-        background: "#F0E2E7",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "#8a7a80",
-        fontSize: 13,
-      }}
-    >
-      Loading chat...
-    </div>
-  ),
-});
+import PortfolioChat from "@/components/PortfolioChat";
 
 export default function HomePage() {
   return (
@@ -28,7 +8,7 @@ export default function HomePage() {
           I build frontend that survives contact with a real backend.
         </h1>
         <p className="max-w-xl text-neutral-600">
-          React, TypeScript, and full-stack integration — accessible forms,
+          React, TypeScript, and full-stack integration, accessible forms,
           real-time features, and the debugging that comes with actually
           running the infrastructure behind them.
         </p>

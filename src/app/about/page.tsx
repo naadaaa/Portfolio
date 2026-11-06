@@ -21,12 +21,11 @@ export default function AboutPage() {
             CS student at Zewail City, full-stack focus with a frontend lean.
             I&apos;ve built accessible React forms, real-time UI features, and
             debugged real integration failures across microservices and
-            containerized apps &mdash; not just followed tutorials.
+            containerized apps.
           </p>
           <p style={{ fontSize: 15, lineHeight: 1.6, color: "#2B2420" }}>
             Looking for a software engineering or full-stack internship where
-            I can keep building things that hold up under real conditions, not
-            just in a demo.
+            I can keep building things that hold up under real conditions.
           </p>
         </div>
       </div>
