@@ -5,7 +5,7 @@ export default function AboutPage() {
     <div style={{ paddingTop: 40, paddingBottom: 80, maxWidth: 560 }}>
       <div style={{ display: "flex", gap: 24, alignItems: "flex-start", flexWrap: "wrap" }}>
         <Image
-          src="/images/nada-photo.jpeg"
+          src=""
           alt="Nada Waleed Abdelsattar"
           width={140}
           height={140}

@@ -20,22 +20,22 @@ export default function WorkPage() {
           <Image
             src="/images/verbalyn-chat.png"
             alt="Verbalyn chat conversation view"
-            width={280}
-            height={180}
+            width={360}
+            height={220}
             style={styles.image}
           />
           <Image
             src="/images/verbalyn-dashboard.png"
             alt="Verbalyn monitoring dashboard"
-            width={280}
-            height={180}
+            width={360}
+            height={220}
             style={styles.image}
           />
           <Image
             src="/images/verbalyn-profile.png"
             alt="Verbalyn account profile page"
-            width={280}
-            height={180}
+            width={360}
+            height={220}
             style={styles.image}
           />
         </div>
@@ -82,15 +82,15 @@ export default function WorkPage() {
           <Image
             src="/images/clipsphere-feed.png"
             alt="ClipSphere home feed"
-            width={280}
-            height={180}
+            width={360}
+            height={220}
             style={styles.image}
           />
           <Image
             src="/images/clipsphere-live-like.png"
             alt="ClipSphere live-like notification with video player and reviews"
-            width={280}
-            height={180}
+            width={360}
+            height={220}
             style={styles.image}
           />
         </div>
@@ -138,7 +138,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   image: {
     borderRadius: 8,
     border: "1px solid #e2d5d9",
-    objectFit: "cover",
+    objectFit: "contain",
+    background: "#f5eef0",
   },
   subheading: {
     fontSize: 15,
