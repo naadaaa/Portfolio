@@ -1,6 +1,6 @@
 # Nada Waleed Abdelsattar — Portfolio
 
-Live: https://nada-abdelsattar.vercel.app
+Live: --
 
 A personal portfolio site with a working AI feature: visitors can ask
 questions about my projects and get grounded answers pulled from real
